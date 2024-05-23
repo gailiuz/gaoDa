@@ -1,4 +1,4 @@
-package ${packageName}.model.dto.${dataKey};
+package com.gc.gaoda.model.dto.scoringResult;
 
 import lombok.Data;
 
@@ -6,13 +6,13 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * 更新${dataName}请求
+ * 编辑评分结果请求
  *
  * @autho gc
- * @from
+ * @from 
  */
 @Data
-public class ${upperDataKey}UpdateRequest implements Serializable {
+public class ScoringResultEditRequest implements Serializable {
 
     /**
      * id

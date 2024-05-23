@@ -1,5 +1,4 @@
 
-
 -- 创建库
 create database if not exists gaoda;
 
