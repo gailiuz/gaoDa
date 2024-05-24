@@ -15,6 +15,7 @@ import com.gc.gaoda.model.dto.app.AppQueryRequest;
 import com.gc.gaoda.model.dto.app.AppUpdateRequest;
 import com.gc.gaoda.model.entity.App;
 import com.gc.gaoda.model.entity.User;
+import com.gc.gaoda.model.enums.ReviewStatusEnum;
 import com.gc.gaoda.model.vo.AppVO;
 import com.gc.gaoda.service.AppService;
 import com.gc.gaoda.service.UserService;
@@ -54,14 +55,15 @@ public class AppController {
     @PostMapping("/add")
     public BaseResponse<Long> addApp(@RequestBody AppAddRequest appAddRequest, HttpServletRequest request) {
         ThrowUtils.throwIf(appAddRequest == null, ErrorCode.PARAMS_ERROR);
-        // todo 在此处将实体类和 DTO 进行转换
+        //  在此处将实体类和 DTO 进行转换
         App app = new App();
         BeanUtils.copyProperties(appAddRequest, app);
         // 数据校验
         appService.validApp(app, true);
-        // todo 填充默认值
+        //  填充默认值
         User loginUser = userService.getLoginUser(request);
         app.setUserId(loginUser.getId());
+        app.setReviewStatus(ReviewStatusEnum.REVIEWING.getValue());
         // 写入数据库
         boolean result = appService.save(app);
         ThrowUtils.throwIf(!result, ErrorCode.OPERATION_ERROR);
@@ -109,7 +111,7 @@ public class AppController {
         if (appUpdateRequest == null || appUpdateRequest.getId() <= 0) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
-        // todo 在此处将实体类和 DTO 进行转换
+        //  在此处将实体类和 DTO 进行转换
         App app = new App();
         BeanUtils.copyProperties(appUpdateRequest, app);
         // 数据校验
@@ -215,7 +217,7 @@ public class AppController {
         if (appEditRequest == null || appEditRequest.getId() <= 0) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
-        // todo 在此处将实体类和 DTO 进行转换
+        //  在此处将实体类和 DTO 进行转换
         App app = new App();
         BeanUtils.copyProperties(appEditRequest, app);
         // 数据校验
@@ -229,6 +231,8 @@ public class AppController {
         if (!oldApp.getUserId().equals(loginUser.getId()) && !userService.isAdmin(loginUser)) {
             throw new BusinessException(ErrorCode.NO_AUTH_ERROR);
         }
+        //重置审核状态
+        app.setReviewStatus(ReviewStatusEnum.REVIEWING.getValue());
         // 操作数据库
         boolean result = appService.updateById(app);
         ThrowUtils.throwIf(!result, ErrorCode.OPERATION_ERROR);

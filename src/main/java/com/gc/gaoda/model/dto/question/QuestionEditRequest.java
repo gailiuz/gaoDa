@@ -25,7 +25,7 @@ public class QuestionEditRequest implements Serializable {
     /**
      * 题目内容
      */
-    private QuestionContentDTO questionContent;
+    private List<QuestionContentDTO> questionContent;
 
 
 
