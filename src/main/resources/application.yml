@@ -77,3 +77,5 @@ knife4j:
         api-rule: package
         api-rule-resources:
           - com.gc.gaoda.controller
+ai:
+  apiKey: 2978043ed427f1ecd6750cdeb153fd1f.zE0QLkMnTepn35JC
